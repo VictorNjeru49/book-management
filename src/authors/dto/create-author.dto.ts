@@ -10,17 +10,16 @@ export class CreateAuthorDto {
   @IsNotEmpty()
   @IsString()
   @Length(2, 50)
-  name: string; // Author's name
+  name: string;
 
   @IsOptional()
   @IsString()
-  bio?: string; // Optional biography of the author
-
+  bio?: string;
   @IsOptional()
   @IsEmail()
-  email?: string; // Optional email address for the author
+  email?: string;
 
   @IsOptional()
   @IsString()
-  website?: string; // Optional website URL for the author
+  website?: string;
 }

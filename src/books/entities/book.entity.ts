@@ -17,7 +17,7 @@ import {
 @Entity()
 export class Book {
   @PrimaryGeneratedColumn('uuid')
-  id: number; // Change to string for UUID
+  id: number;
 
   @Column()
   @IsNotEmpty()
@@ -33,7 +33,7 @@ export class Book {
 
   @Column()
   @IsNotEmpty()
-  authorId: number; // Change to string for UUID
+  authorId: number;
 
   @Column()
   @IsNotEmpty()

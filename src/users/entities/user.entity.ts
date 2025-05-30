@@ -22,7 +22,7 @@ import {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number; // Changed to string to match UUID type
+  id: number;
 
   @Column({ unique: true })
   @IsNotEmpty()

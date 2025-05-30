@@ -49,7 +49,7 @@ export class SeedService {
     const existingCategories = await this.categoryRepo.find();
     if (existingCategories.length > 0) {
       console.log('Categories already exist. Skipping seeding.');
-      return existingCategories; // Return existing categories
+      return existingCategories;
     }
 
     const categories = this.categoryRepo.create(
@@ -72,14 +72,13 @@ export class SeedService {
       return [];
     }
 
-    // Create books with random categories
     const booksData = Array.from({ length: count }).map(() => {
       return {
         title: faker.lorem.sentence(),
         description: faker.lorem.paragraph(),
         authorId:
-          authors[faker.number.int({ min: 0, max: authors.length - 1 })].id, // Use author ID
-        categories: faker.helpers.arrayElements(categories, { min: 1, max: 3 }), // Assign as array of Category objects
+          authors[faker.number.int({ min: 0, max: authors.length - 1 })].id,
+        categories: faker.helpers.arrayElements(categories, { min: 1, max: 3 }),
         publicationYear: faker.date.past().getFullYear(),
         isAvailable: true,
       };
@@ -105,7 +104,6 @@ export class SeedService {
     const books = await this.seedBooks(count);
     const users = await this.seedUsers(count);
 
-    // Check if books and users are available
     if (books.length === 0) {
       console.error('No books found. Cannot seed book reviews.');
       return [];
@@ -114,16 +112,13 @@ export class SeedService {
       console.error('No users found. Cannot seed book reviews.');
       return [];
     }
-
-    // Create reviews for the seeded books
     const reviewsData = Array.from({ length: count }).map((_, index) => ({
       content: faker.lorem.sentence(),
       rating: faker.number.int({ min: 1, max: 5 }),
-      userId: users[index].id, // Use user ID
-      bookId: books[index].id, // Use book ID
+      userId: users[index].id,
+      bookId: books[index].id,
     }));
 
-    // Log the reviews data before saving
     console.log('Reviews data to be seeded:', reviewsData);
 
     try {
