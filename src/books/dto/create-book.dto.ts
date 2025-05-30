@@ -1,22 +1,9 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsArray,
-  IsOptional,
-  IsNumber,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsArray, IsOptional } from 'class-validator';
 
 export class CreateBookDto {
   @IsNotEmpty()
   @IsString()
   title: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  categoryId: number;
-  @IsNotEmpty()
-  @IsNumber()
-  authorId: number;
 
   @IsOptional()
   @IsArray()

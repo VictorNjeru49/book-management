@@ -17,7 +17,7 @@ import { Book } from '../../books/entities/book.entity';
 @Entity()
 export class Category {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: number; // Change to string for UUID
 
   @Column({ unique: true })
   @IsNotEmpty()

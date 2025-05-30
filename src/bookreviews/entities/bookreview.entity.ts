@@ -14,7 +14,7 @@ import { Book } from '../../books/entities/book.entity';
 @Entity()
 export class Bookreview {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: number; // Change to string for UUID
 
   @Column({ type: 'text' })
   @IsNotEmpty()
@@ -31,11 +31,11 @@ export class Bookreview {
 
   @Column()
   @IsNotEmpty()
-  userId: number;
+  userId: number; // Change to string for UUID
 
   @Column()
   @IsNotEmpty()
-  bookId: number;
+  bookId: number; // Change to string for UUID
 
   @CreateDateColumn()
   createdAt: Date;

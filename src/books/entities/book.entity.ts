@@ -17,7 +17,7 @@ import {
 @Entity()
 export class Book {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: number; // Change to string for UUID
 
   @Column()
   @IsNotEmpty()
@@ -33,11 +33,7 @@ export class Book {
 
   @Column()
   @IsNotEmpty()
-  authorId: number;
-
-  @Column()
-  @IsNotEmpty()
-  categoryId: number;
+  authorId: number; // Change to string for UUID
 
   @Column()
   @IsNotEmpty()
@@ -57,6 +53,6 @@ export class Book {
   reviews: Relation<Bookreview[]>;
 
   @ManyToMany(() => Category, (category) => category.books)
-  @JoinTable({ name: 'categoryId' })
+  @JoinTable()
   categories: Relation<Category[]>;
 }

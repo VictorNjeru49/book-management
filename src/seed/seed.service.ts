@@ -22,14 +22,14 @@ export class SeedService {
   ) {}
 
   async seedUsers(count: number = 10): Promise<User[]> {
-    const profiles = await this.seedProfiles(count); // Ensure profiles are created first
+    const profiles = await this.seedProfiles(count);
 
     const users = this.userRepo.create(
       Array.from({ length: count }).map((_, index) => ({
         name: faker.person.fullName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
-        profileId: profiles[index].id, // Link to the created profile
+        profileId: profiles[index].id,
       })),
     );
     return this.userRepo.save(users);
@@ -46,6 +46,12 @@ export class SeedService {
   }
 
   async seedCategories(count: number = 5): Promise<Category[]> {
+    const existingCategories = await this.categoryRepo.find();
+    if (existingCategories.length > 0) {
+      console.log('Categories already exist. Skipping seeding.');
+      return existingCategories; // Return existing categories
+    }
+
     const categories = this.categoryRepo.create(
       Array.from({ length: count }).map(() => ({
         name: faker.commerce.department(),
@@ -53,33 +59,85 @@ export class SeedService {
     );
     return this.categoryRepo.save(categories);
   }
-
   async seedBooks(count: number = 10): Promise<Book[]> {
-    const authors = await this.seedAuthors(count); // Ensure authors are created first
-    const categories = await this.seedCategories(count); // Ensure categories are created first
+    const authors = await this.seedAuthors(count);
+    const categories: Category[] = await this.categoryRepo.find();
 
-    const books = this.bookRepo.create(
-      Array.from({ length: count }).map((_, index) => ({
-        title: faker.lorem.words(3).concat(' '),
-        authorId: authors[index].id, // Link to the created author
-        categoryId: categories[index].id, // Link to a category
-      })),
-    );
-    return this.bookRepo.save(books);
+    if (authors.length === 0) {
+      console.error('No authors found. Cannot seed books.');
+      return [];
+    }
+    if (categories.length === 0) {
+      console.error('No categories found. Cannot seed books.');
+      return [];
+    }
+
+    // Create books with random categories
+    const booksData = Array.from({ length: count }).map(() => {
+      return {
+        title: faker.lorem.sentence(),
+        description: faker.lorem.paragraph(),
+        authorId:
+          authors[faker.number.int({ min: 0, max: authors.length - 1 })].id, // Use author ID
+        categories: faker.helpers.arrayElements(categories, { min: 1, max: 3 }), // Assign as array of Category objects
+        publicationYear: faker.date.past().getFullYear(),
+        isAvailable: true,
+      };
+    });
+
+    console.log('Books data to be seeded:', booksData);
+
+    try {
+      const savedBooks = await this.bookRepo.save(booksData);
+      console.log('Books seeded successfully:', savedBooks);
+      return savedBooks;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error seeding books:', error.message);
+      } else {
+        console.error('Unexpected error seeding books:', error);
+      }
+      return [];
+    }
   }
 
   async seedBookReviews(count: number = 10): Promise<Bookreview[]> {
-    const books = await this.seedBooks(count); // Ensure books are created first
-    const users = await this.seedUsers(count); // Ensure users are created first
+    const books = await this.seedBooks(count);
+    const users = await this.seedUsers(count);
 
-    const reviews = this.bookReviewRepo.create(
-      Array.from({ length: count }).map((_, index) => ({
-        content: faker.lorem.sentence(),
-        bookId: books[index].id, // Link to a book
-        userId: users[index].id, // Link to a user
-      })),
-    );
-    return this.bookReviewRepo.save(reviews);
+    // Check if books and users are available
+    if (books.length === 0) {
+      console.error('No books found. Cannot seed book reviews.');
+      return [];
+    }
+    if (users.length === 0) {
+      console.error('No users found. Cannot seed book reviews.');
+      return [];
+    }
+
+    // Create reviews for the seeded books
+    const reviewsData = Array.from({ length: count }).map((_, index) => ({
+      content: faker.lorem.sentence(),
+      rating: faker.number.int({ min: 1, max: 5 }),
+      userId: users[index].id, // Use user ID
+      bookId: books[index].id, // Use book ID
+    }));
+
+    // Log the reviews data before saving
+    console.log('Reviews data to be seeded:', reviewsData);
+
+    try {
+      const savedReviews = await this.bookReviewRepo.save(reviewsData);
+      console.log('Book reviews seeded successfully:', savedReviews);
+      return savedReviews;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error seeding book reviews:', error.message);
+      } else {
+        console.error('Unexpected error seeding book reviews:', error);
+      }
+      return [];
+    }
   }
 
   async seedProfiles(count: number = 10): Promise<Profile[]> {
@@ -93,11 +151,11 @@ export class SeedService {
   }
 
   async seedAll(): Promise<void> {
-    await this.seedProfiles(); // Seed profiles first
-    await this.seedUsers(); // Seed users with profiles
-    await this.seedAuthors(); // Seed authors
-    await this.seedCategories(); // Seed categories
-    await this.seedBooks(); // Seed books with authors and categories
-    await this.seedBookReviews(); // Seed reviews with books and users
+    await this.seedProfiles();
+    await this.seedUsers();
+    await this.seedAuthors();
+    await this.seedCategories();
+    await this.seedBooks();
+    await this.seedBookReviews();
   }
 }

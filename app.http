@@ -1,4 +1,4 @@
-@url = https://book-management-avwc.onrender.com
+@url = http://localhost:8000
 
 ###
 GET {{url}}/users
