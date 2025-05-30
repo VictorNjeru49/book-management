@@ -10,6 +10,7 @@ import { BookreviewsModule } from './bookreviews/bookreviews.module';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from './logger.middleware';
 import { DatabaseModule } from './database/database.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { DatabaseModule } from './database/database.module';
     CategoriesModule,
     BookreviewsModule,
     DatabaseModule,
+    SeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],
