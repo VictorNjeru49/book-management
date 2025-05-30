@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { BookreviewsService } from './bookreviews.service';
 import { CreateBookreviewDto } from './dto/create-bookreview.dto';
@@ -16,7 +17,7 @@ export class BookreviewsController {
   constructor(private readonly bookreviewsService: BookreviewsService) {}
 
   @Post()
-  create(@Body() createBookreviewDto: CreateBookreviewDto) {
+  create(@Body(new ValidationPipe()) createBookreviewDto: CreateBookreviewDto) {
     return this.bookreviewsService.create(createBookreviewDto);
   }
 
@@ -26,20 +27,20 @@ export class BookreviewsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookreviewsService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.bookreviewsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateBookreviewDto: UpdateBookreviewDto,
   ) {
-    return this.bookreviewsService.update(+id, updateBookreviewDto);
+    return this.bookreviewsService.update(id, updateBookreviewDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookreviewsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.bookreviewsService.remove(id);
   }
 }

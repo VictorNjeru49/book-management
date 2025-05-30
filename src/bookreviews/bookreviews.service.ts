@@ -21,7 +21,7 @@ export class BookreviewsService {
     return this.bookReviewRepo.find();
   }
 
-  async findOne(id: string): Promise<Bookreview | null> {
+  async findOne(id: number): Promise<Bookreview | null> {
     const bookReview = await this.bookReviewRepo.findOneBy({ id });
     if (!bookReview) {
       throw new NotFoundException(`Book review with ID ${id} not found`);
@@ -30,7 +30,7 @@ export class BookreviewsService {
   }
 
   async update(
-    id: string,
+    id: number,
     updateBookreviewDto: UpdateBookreviewDto,
   ): Promise<Bookreview | null> {
     await this.bookReviewRepo.update(id, updateBookreviewDto);
@@ -41,7 +41,7 @@ export class BookreviewsService {
     return updatedBookReview;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     const result = await this.bookReviewRepo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Book review with ID ${id} not found`);

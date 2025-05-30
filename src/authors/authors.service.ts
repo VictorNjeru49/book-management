@@ -20,7 +20,7 @@ export class AuthorsService {
     return this.authorRepo.find();
   }
 
-  async findOne(id: string): Promise<Author | null> {
+  async findOne(id: number): Promise<Author | null> {
     const author = await this.authorRepo.findOneBy({ id });
     if (!author) {
       throw new NotFoundException(`Author with ID ${id} not found`);
@@ -29,7 +29,7 @@ export class AuthorsService {
   }
 
   async update(
-    id: string,
+    id: number,
     updateAuthorDto: UpdateAuthorDto,
   ): Promise<Author | null> {
     await this.authorRepo.update(id, updateAuthorDto);
@@ -40,7 +40,7 @@ export class AuthorsService {
     return updatedAuthor;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     const result = await this.authorRepo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Author with ID ${id} not found`);

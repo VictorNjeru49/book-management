@@ -16,5 +16,5 @@ export class CreateUserDto {
   password: string;
 
   @IsNotEmpty()
-  profileId: string;
+  profileId: number;
 }

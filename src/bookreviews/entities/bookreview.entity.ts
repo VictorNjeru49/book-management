@@ -12,7 +12,7 @@ import { Book } from '../../books/entities/book.entity';
 @Entity()
 export class Bookreview {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: number;
 
   @Column({ type: 'text' })
   @IsNotEmpty()

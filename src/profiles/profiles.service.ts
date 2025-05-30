@@ -21,7 +21,7 @@ export class ProfilesService {
     return this.profileRepo.find();
   }
 
-  async findOne(id: string): Promise<Profile | null> {
+  async findOne(id: number): Promise<Profile | null> {
     const profile = await this.profileRepo.findOneBy({ id });
     if (!profile) {
       throw new NotFoundException(`Profile with ID ${id} not found`);
@@ -30,7 +30,7 @@ export class ProfilesService {
   }
 
   async update(
-    id: string,
+    id: number,
     updateProfileDto: UpdateProfileDto,
   ): Promise<Profile | null> {
     await this.profileRepo.update(id, updateProfileDto);
@@ -41,7 +41,7 @@ export class ProfilesService {
     return updatedProfile;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     const result = await this.profileRepo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Profile with ID ${id} not found`);

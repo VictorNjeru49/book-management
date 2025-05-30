@@ -18,5 +18,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   password?: string;
 
   @IsOptional()
-  profileId?: string; // Reference to the profile ID
+  profileId?: number;
 }

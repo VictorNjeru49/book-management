@@ -13,7 +13,7 @@ import {
 @Entity()
 export class Author {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: number;
 
   @Column()
   @IsNotEmpty()

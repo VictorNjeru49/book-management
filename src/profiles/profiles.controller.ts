@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
@@ -16,7 +17,7 @@ export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
 
   @Post()
-  create(@Body() createProfileDto: CreateProfileDto) {
+  create(@Body(new ValidationPipe()) createProfileDto: CreateProfileDto) {
     return this.profilesService.create(createProfileDto);
   }
 
@@ -26,17 +27,17 @@ export class ProfilesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.profilesService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.profilesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profilesService.update(+id, updateProfileDto);
+  update(@Param('id') id: number, @Body() updateProfileDto: UpdateProfileDto) {
+    return this.profilesService.update(id, updateProfileDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.profilesService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.profilesService.remove(id);
   }
 }

@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 @Entity()
 export class Profile {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: number;
 
   @Column({ type: 'text', nullable: true })
   bio?: string;

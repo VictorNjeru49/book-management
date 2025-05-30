@@ -15,7 +15,7 @@ import {
 @Entity()
 export class Book {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: number;
 
   @Column()
   @IsNotEmpty()

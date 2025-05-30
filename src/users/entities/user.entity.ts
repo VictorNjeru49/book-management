@@ -20,7 +20,7 @@ import {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: number;
 
   @Column({ unique: true })
   @IsNotEmpty()
