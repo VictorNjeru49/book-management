@@ -62,7 +62,7 @@ export class SeedService {
       Array.from({ length: count }).map((_, index) => ({
         title: faker.lorem.words(3).concat(' '),
         authorId: authors[index].id, // Link to the created author
-        categoryId: categories[index % categories.length].id, // Link to a category
+        categoryId: categories[index].id, // Link to a category
       })),
     );
     return this.bookRepo.save(books);
@@ -75,8 +75,8 @@ export class SeedService {
     const reviews = this.bookReviewRepo.create(
       Array.from({ length: count }).map((_, index) => ({
         content: faker.lorem.sentence(),
-        bookId: books[index % books.length].id, // Link to a book
-        userId: users[index % users.length].id, // Link to a user
+        bookId: books[index].id, // Link to a book
+        userId: users[index].id, // Link to a user
       })),
     );
     return this.bookReviewRepo.save(reviews);
