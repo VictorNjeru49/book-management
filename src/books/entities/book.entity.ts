@@ -10,6 +10,8 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  Relation,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -31,6 +33,14 @@ export class Book {
 
   @Column()
   @IsNotEmpty()
+  authorId: number;
+
+  @Column()
+  @IsNotEmpty()
+  categoryId: number;
+
+  @Column()
+  @IsNotEmpty()
   @IsInt()
   @Min(1000)
   @Max(new Date().getFullYear())
@@ -40,12 +50,13 @@ export class Book {
   isAvailable: boolean;
 
   @ManyToOne(() => Author, (author) => author.books)
-  author: Author;
+  @JoinColumn({ name: 'authorId' })
+  author: Relation<Author>;
 
   @OneToMany(() => Bookreview, (review) => review.book)
-  reviews: Bookreview[];
+  reviews: Relation<Bookreview[]>;
 
   @ManyToMany(() => Category, (category) => category.books)
-  @JoinTable()
-  categories: Category[];
+  @JoinTable({ name: 'categoryId' })
+  categories: Relation<Category[]>;
 }

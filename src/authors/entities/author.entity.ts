@@ -1,5 +1,11 @@
 import { Book } from '../../books/entities/book.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  Relation,
+} from 'typeorm';
 import {
   IsNotEmpty,
   IsString,
@@ -36,5 +42,5 @@ export class Author {
   isActive: boolean;
 
   @OneToMany(() => Book, (book) => book.author)
-  books: Book[];
+  books: Relation<Book[]>;
 }

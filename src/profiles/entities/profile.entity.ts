@@ -1,5 +1,11 @@
 import { User } from '../../users/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  Relation,
+} from 'typeorm';
 @Entity()
 export class Profile {
   @PrimaryGeneratedColumn('uuid')
@@ -18,5 +24,5 @@ export class Profile {
   location?: string;
 
   @OneToOne(() => User, (user) => user.profile)
-  user: User;
+  user: Relation<User>;
 }

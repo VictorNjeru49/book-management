@@ -17,7 +17,9 @@ export class AuthorsService {
   }
 
   async findAll(): Promise<Author[]> {
-    return this.authorRepo.find();
+    return this.authorRepo.find({
+      relations: ['books'],
+    });
   }
 
   async findOne(id: number): Promise<Author | null> {

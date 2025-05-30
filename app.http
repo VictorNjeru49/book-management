@@ -1,4 +1,43 @@
-@url = http://localhost:8000
+@url = https://book-management-avwc.onrender.com
 
 ###
 GET {{url}}/users
+
+###
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "name": "john doe",
+    "email": "johndoe@gmail.com",
+    "password": "uuiq9229903",
+    "profileId": "038d2b4a-46ac-4873-b8f6-5049c844caae"
+}
+
+###
+POST {{url}}/seed
+
+###
+GET {{url}}/profiles
+
+###
+POST {{url}}/profiles
+Content-Type: application/json
+
+{
+    "bio": "timeset",
+    "avatar":"conn",
+    "location": "chicago"
+}
+
+###
+GET {{url}}/authors
+
+###
+GET {{url}}/books
+
+###
+GET {{url}}/bookreviews
+
+###
+GET {{url}}/categories

@@ -18,7 +18,9 @@ export class BookreviewsService {
   }
 
   async findAll(): Promise<Bookreview[]> {
-    return this.bookReviewRepo.find();
+    return this.bookReviewRepo.find({
+      relations: ['user', 'book'],
+    });
   }
 
   async findOne(id: number): Promise<Bookreview | null> {

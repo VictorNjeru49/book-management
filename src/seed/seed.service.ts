@@ -22,12 +22,14 @@ export class SeedService {
   ) {}
 
   async seedUsers(count: number = 10): Promise<User[]> {
+    const profiles = await this.seedProfiles(count); // Ensure profiles are created first
+
     const users = this.userRepo.create(
-      Array.from({ length: count }).map(() => ({
+      Array.from({ length: count }).map((_, index) => ({
         name: faker.person.fullName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
-        profileId: faker.string.uuid(),
+        profileId: profiles[index].id, // Link to the created profile
       })),
     );
     return this.userRepo.save(users);
@@ -43,23 +45,38 @@ export class SeedService {
     return this.authorRepo.save(authors);
   }
 
-  async seedBooks(count: number = 10): Promise<Book[]> {
-    const books = this.bookRepo.create(
+  async seedCategories(count: number = 5): Promise<Category[]> {
+    const categories = this.categoryRepo.create(
       Array.from({ length: count }).map(() => ({
-        title: faker.lorem.word(3).concat(''),
-        authorId: faker.string.uuid(),
-        categoryId: faker.string.uuid(),
+        name: faker.commerce.department(),
+      })),
+    );
+    return this.categoryRepo.save(categories);
+  }
+
+  async seedBooks(count: number = 10): Promise<Book[]> {
+    const authors = await this.seedAuthors(count); // Ensure authors are created first
+    const categories = await this.seedCategories(count); // Ensure categories are created first
+
+    const books = this.bookRepo.create(
+      Array.from({ length: count }).map((_, index) => ({
+        title: faker.lorem.words(3).concat(' '),
+        authorId: authors[index].id, // Link to the created author
+        categoryId: categories[index % categories.length].id, // Link to a category
       })),
     );
     return this.bookRepo.save(books);
   }
 
   async seedBookReviews(count: number = 10): Promise<Bookreview[]> {
+    const books = await this.seedBooks(count); // Ensure books are created first
+    const users = await this.seedUsers(count); // Ensure users are created first
+
     const reviews = this.bookReviewRepo.create(
-      Array.from({ length: count }).map(() => ({
+      Array.from({ length: count }).map((_, index) => ({
         content: faker.lorem.sentence(),
-        bookId: faker.string.uuid(),
-        userId: faker.string.uuid(),
+        bookId: books[index % books.length].id, // Link to a book
+        userId: users[index % users.length].id, // Link to a user
       })),
     );
     return this.bookReviewRepo.save(reviews);
@@ -75,21 +92,12 @@ export class SeedService {
     return this.profileRepo.save(profiles);
   }
 
-  async seedCategories(count: number = 5): Promise<Category[]> {
-    const categories = this.categoryRepo.create(
-      Array.from({ length: count }).map(() => ({
-        name: faker.commerce.department(),
-      })),
-    );
-    return this.categoryRepo.save(categories);
-  }
-
   async seedAll(): Promise<void> {
-    await this.seedUsers();
-    await this.seedAuthors();
-    await this.seedBooks();
-    await this.seedBookReviews();
-    await this.seedProfiles();
-    await this.seedCategories();
+    await this.seedProfiles(); // Seed profiles first
+    await this.seedUsers(); // Seed users with profiles
+    await this.seedAuthors(); // Seed authors
+    await this.seedCategories(); // Seed categories
+    await this.seedBooks(); // Seed books with authors and categories
+    await this.seedBookReviews(); // Seed reviews with books and users
   }
 }

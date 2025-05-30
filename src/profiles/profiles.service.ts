@@ -18,7 +18,9 @@ export class ProfilesService {
   }
 
   async findAll(): Promise<Profile[]> {
-    return this.profileRepo.find();
+    return this.profileRepo.find({
+      relations: ['user'],
+    });
   }
 
   async findOne(id: number): Promise<Profile | null> {

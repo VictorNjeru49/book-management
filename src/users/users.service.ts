@@ -32,7 +32,12 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userRepo.find();
+    return this.userRepo.find({
+      relations: {
+        profile: true,
+        reviews: true,
+      },
+    });
   }
 
   async findOne(id: number): Promise<User | null> {

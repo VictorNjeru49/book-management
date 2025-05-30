@@ -1,7 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { IsOptional, IsString, IsArray } from 'class-validator';
 import { CreateBookDto } from './create-book.dto';
-import { Author } from '../../authors/entities/author.entity';
 
 export class UpdateBookDto extends PartialType(CreateBookDto) {
   @IsOptional()
@@ -10,10 +9,10 @@ export class UpdateBookDto extends PartialType(CreateBookDto) {
 
   @IsOptional()
   @IsString()
-  author?: Author;
+  authorId: number;
 
   @IsOptional()
-  categoryId?: string;
+  categoryId?: number;
 
   @IsOptional()
   @IsArray()

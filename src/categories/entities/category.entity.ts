@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  Relation,
+} from 'typeorm';
 import {
   IsNotEmpty,
   IsString,
@@ -25,5 +31,5 @@ export class Category {
   description?: string;
 
   @ManyToMany(() => Book, (book) => book.categories)
-  books: Book[];
+  books: Relation<Book[]>;
 }

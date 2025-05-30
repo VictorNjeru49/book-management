@@ -1,13 +1,17 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateBookreviewDto {
   @IsNotEmpty()
   @IsString()
   content: string;
+  @IsNotEmpty()
+  @IsNumber()
+  rating: number;
+  @IsNotEmpty()
+  @IsNumber()
+  bookId: number;
 
   @IsNotEmpty()
-  bookId: string; // Reference to the book ID
-
-  @IsNotEmpty()
-  userId: string; // Reference to the user ID
+  @IsNumber()
+  userId: number;
 }

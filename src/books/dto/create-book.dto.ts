@@ -1,5 +1,10 @@
-import { IsNotEmpty, IsString, IsArray, IsOptional } from 'class-validator';
-import { Author } from '../../authors/entities/author.entity';
+import {
+  IsNotEmpty,
+  IsString,
+  IsArray,
+  IsOptional,
+  IsNumber,
+} from 'class-validator';
 
 export class CreateBookDto {
   @IsNotEmpty()
@@ -7,11 +12,11 @@ export class CreateBookDto {
   title: string;
 
   @IsNotEmpty()
-  @IsString()
-  author: Author;
-
+  @IsNumber()
+  categoryId: number;
   @IsNotEmpty()
-  categoryId: string;
+  @IsNumber()
+  authorId: number;
 
   @IsOptional()
   @IsArray()

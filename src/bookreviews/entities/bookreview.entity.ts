@@ -4,6 +4,8 @@ import {
   Column,
   ManyToOne,
   CreateDateColumn,
+  Relation,
+  JoinColumn,
 } from 'typeorm';
 import { IsNotEmpty, IsString, Length, IsInt, Min, Max } from 'class-validator';
 import { User } from '../../users/entities/user.entity';
@@ -27,12 +29,22 @@ export class Bookreview {
   @Max(5)
   rating: number;
 
+  @Column()
+  @IsNotEmpty()
+  userId: number;
+
+  @Column()
+  @IsNotEmpty()
+  bookId: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.reviews)
-  user: User;
+  @JoinColumn({ name: 'userId' })
+  user: Relation<User>;
 
   @ManyToOne(() => Book, (book) => book.reviews)
-  book: Book;
+  @JoinColumn({ name: 'bookId' })
+  book: Relation<Book>;
 }

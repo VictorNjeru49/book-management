@@ -15,12 +15,14 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
+  Relation,
 } from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: number; // Changed to string to match UUID type
 
   @Column({ unique: true })
   @IsNotEmpty()
@@ -56,8 +58,12 @@ export class User {
   updatedAt: Date;
 
   @OneToOne(() => Profile, (profile) => profile.user, { cascade: true })
-  profile: Profile;
+  @JoinColumn({ name: 'profileId' })
+  profile: Relation<Profile>;
 
   @OneToMany(() => Bookreview, (review) => review.user)
-  reviews: Bookreview[];
+  reviews: Relation<Bookreview[]>;
+
+  @Column({ nullable: true })
+  profileId: number;
 }

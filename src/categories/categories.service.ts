@@ -17,7 +17,9 @@ export class CategoriesService {
   }
 
   async findAll(): Promise<Category[]> {
-    return this.categoryRepo.find();
+    return this.categoryRepo.find({
+      relations: ['books'],
+    });
   }
 
   async findOne(id: number): Promise<Category | null> {
